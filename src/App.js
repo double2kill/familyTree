@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import './App.css';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import Form from './components/Form'
 import UserTag from './components/UserTag'
 import PreviewTree from './components/PreviewTree'
-import 'antd/dist/antd.css';
 
 const App = () => {
   const initData = [
@@ -63,8 +61,13 @@ const App = () => {
     }
   }];
 
+  const handleSubmit = () => {
+    debugger
+  }
+
   return (
     <div>
+      <Button type="primary" onClick={handleSubmit}>同步</Button>
       <Form options={options} onSubmit={addItem}/>
       <Table dataSource={items} columns={columns} rowKey='id'/>
       <PreviewTree dataSource={items}/>
