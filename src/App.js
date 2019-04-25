@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'antd';
 import Form from './components/Form'
 import UserTag from './components/UserTag'
 import PreviewTree from './components/PreviewTree'
+import * as URL from './constants/url'
+import axios from 'axios'
 
 const App = () => {
+  const res = axios.get(`${URL.CMD}/family`, {
+    params: {
+      _sort: 'update_time',
+      _order: 'desc'
+    }
+  })
   const initData = [
     { id: 1, name: 'Tania', child_ids: [2, 3]},
     { id: 2, name: 'Craig', parent_id: 1},
@@ -12,6 +20,16 @@ const App = () => {
   ]
 
   const [items, setItems] = useState(initData);
+
+  useEffect(async () => {
+    const res = await axios.get(`${URL.CMD}/family`, {
+      params: {
+        _sort: 'update_time',
+        _order: 'desc'
+      }
+    })
+    setItems(res.data[0].data)
+  },[]);
 
   const options = items.map(item => ({
     value: item.id,
@@ -62,7 +80,10 @@ const App = () => {
   }];
 
   const handleSubmit = () => {
-    debugger
+    axios.post(`${URL.CMD}/family`, {
+      data: items,
+      update_time: new Date().valueOf()
+    })
   }
 
   return (
